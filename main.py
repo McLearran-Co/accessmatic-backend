@@ -29,6 +29,16 @@ async def api_test():
         "environment": os.getenv("ENVIRONMENT", "development")
     }
 
+@app.get("/api/v1/debug")
+async def debug():
+    openai_key = os.getenv("OPENAI_API_KEY")
+    return {
+        "openai_key_exists": openai_key is not None,
+        "openai_key_length": len(openai_key) if openai_key else 0,
+        "openai_key_prefix": openai_key[:7] if openai_key else "None",
+        "all_env_vars": list(os.environ.keys())
+    }
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
